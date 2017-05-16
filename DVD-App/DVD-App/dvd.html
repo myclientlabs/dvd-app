@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DVD Library</title>
+
+      
+    </head>
+    <body>
+<!--This is the main page-->
+        <div class="container" id="mainPage">
+          <div class="row" style="height: 20px;"></div>
+          <div class="col-md-12">
+            <div class="row">
+              <center>
+                <form role="form" id="main-form">
+                  <div class="col-md-2">
+                    <button type="button"
+                            id="gotoCreateButton"
+                            class="btn btn-default">
+                        Create DVD
+                    </button>
+                  </div>
+                  <div class="col-md-2"></div>
+                  <div class="col-md-1">
+                    <button type="button"
+                            id="searchButton"
+                            class="btn btn-default">
+                        Search
+                    </button>
+                  </div>
+                  <div class="col-md-3">
+                    <select id="dropDown">
+                      <option value="showAll" selected="selected">Show All</option>
+                      <!--<option value="" disabled="disabled" selected="selected">Search Category</option>-->
+                      <!--option value="showAll">Show All</option-->
+                      <option value="searchTitle">Title</option>
+                      <option value="searchYear">Release Year</option>
+                      <option value="searchDirector">Director</option>
+                      <option value="searchRating">Rating</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text"
+                           class="form-control"
+                           id="searchTerm"
+                           placeholder="Search Term">
+                  </div>
+                </form>
+            </center>
+            </div>
+            <hr  width="100%" style="height:2px" color="#000000">
+            <ul class="list-group" id="errorMessages"></ul>
+            <!--
+            Add a row to our container - this will hold the summary table and the new contact form.
+            -->
+            <div class="dvdTable">
+              <table id="dvdTable" width="100%" class="table table-striped">
+                <tr width="100%">
+                  <th width="25%">Title</th>
+                  <th width="25%">Release Date</th>
+                  <th width="15%">Director</th>
+                  <th width="10%">Rating</th>
+                  <th width="10%"><span></span></th>
+                  <th width="15%"><span></span></th>
+                  <!--
+                   This holds the list of contacts - we will add rows dynamically using jQuery
+                   -->
+                  <tbody id="contentRows"></tbody>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+<!--This is the DVD editing page-->
+      <div class="container" id = "editDVD">
+        <div class="row" style="height: 20px;"></div>
+        <form role="form" id="edit-form">
+          <div class="col-md-12">
+            <div class="row">
+              <left>
+                <div class="row">
+                  <h3> Edit DVD: xxx</h3>
+                  <hr  width="100%" style="height:2px" color="#000000">
+                  <ul class="list-group" id="editErrorMessages"></ul>
+                  <!--
+                  Add a row to our container - this will hold the summary table and the new contact form.
+                  -->
+                </div>
+              </left>
+            </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>DVD Title: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                           class="form-control"
+                           id="editDVDTitle"
+                           placeholder="Enter DVD Title" required/>
+                     <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>Release Year: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                            class="form-control"
+                            id="editReleaseYear"
+                            pattern="[0-9]{4}"
+                            maxlength = "4"
+                            minlength = "4"
+                            placeholder="Enter Release Year" required/>
+                      <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>Director: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                           class="form-control"
+                           id="editDirector"
+                           placeholder="Enter Director"/>
+                     <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>Rating: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <select id="editRating" required/>
+                       <option value="PG">PG</option>
+                       <option value="PG-13">PG-13</option>
+                       <option value="R">R</option>
+                       <option value="X">X</option>
+                     </select>
+                     <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>Notes: </span></h4>
+                  </div>
+                  <div class="col-md-4">
+                     <textarea id="editNotes" rows="6" cols="50" placeholder="Enter Note"></textarea>
+                     <br>
+                     <br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+            </div>
+        </form>
+        <div class="container">
+          <form role="form" id="create-form-btn">
+              <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <button type="button"
+                              id="editCancel"
+                              class="btn btn-default">
+                          Cancel
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <input type="hidden" id="editDVDId">
+                      <button type="button"
+                              id="editDVDButton"
+                              class="btn btn-default">
+                          Save Changes
+                      </button>
+                    </div>
+                    <div class="col-md-9"></div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+<!--This is the DVD create page-->
+      <div class="container" id = "addDVD">
+       <div class="row" style="height: 20px;"></div>
+        <form role="form" id="create-form">
+          <div class="col-md-12">
+            <div class="row">
+              <left>
+                <div class="row">
+                  <h3> Create DVD</h3>
+                  <hr  width="100%" style="height:2px" color="#000000">
+                  <ul class="list-group" id="adderrorMessages"></ul>
+                  <!--
+                  Add a row to our container - this will hold the summary table and the new contact form.
+                  -->
+                </div>
+              </left>
+            </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>DVD Title: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                           class="form-control"
+                           id="addDVDTitle"
+                           placeholder="Enter DVD Title" required/>
+                     <h4></h4><br>
+                   </div>
+                   <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                   <h4><span>Release Year: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                            class="form-control"
+                            pattern="[0-9]{4}"
+                            maxlength = "4"
+                            minlength = "4"
+                            id="addReleaseYear"
+                            placeholder = "Enter Release Year" required/>
+                     <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                     <h4><span>Director: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <input type="text"
+                           class="form-control"
+                           id="addDirector"
+                           placeholder="Enter Director"/>
+                     <h4></h4><br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                     <h4><span>Rating: </span></h4><br>
+                  </div>
+                  <div class="col-md-4">
+                     <select id="addRating" required/>
+                       <option value="PG">PG</option>
+                       <option value="PG-13">PG-13</option>
+                       <option value="R">R</option>
+                       <option value="X">X</option>
+                     </select>
+                     <h4></h4><br>
+                   </div>
+                   <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4><span>Notes: </span></h4>
+                  </div>
+                  <div class="col-md-4">
+                    <textarea id="addNotes" rows="6" cols="50" placeholder="Enter Note"></textarea>
+                    <br>
+                    <br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+            </div>
+        </form>
+        <div class="container">
+          <form role="form" id="addCancel">
+              <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <button type="button"
+                              id="addCancel"
+                              class="btn btn-default">
+                          Cancel
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button"
+                              id="addDVDButton"
+                              class="btn btn-default">
+                          Create DVD
+                      </button>
+                    </div>
+                    <div class="col-md-9"></div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+<!--This is the DVD display page-->
+        <div class="container" id="displayDetail">
+          <div class="row" style="height: 20px;"></div>
+          <div class="col-md-12">
+            <div class="row">
+              <left>
+                <div class="row">
+                  <h3><span></span></h3>
+                  <hr  width="100%" style="height:2px" color="#000000">
+                  <ul class="list-group" id="errorMessages"></ul>
+                  <!--
+                  Add a row to our container - this will hold the summary table and the new contact form.
+                  -->
+                </div>
+              </left>
+            </div>
+            <left>
+              <h4>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                      <span>DVD Title:</span>
+                    </div>
+                    <div class="col-md-4">
+                      <span id="displayTitle"></span>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                      <span>Release Year:</span>
+                    </div>
+                    <div class="col-md-4">
+                      <span id="displayYear"></span>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-12">
+                  <div class="col-md-2">
+                      <span>Director:</span>
+                  </div>
+                  <div class="col-md-4">
+                      <span id="displayDirector"></span>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-12">
+                  <div class="col-md-2">
+                      <span>Rating:</span>
+                  </div>
+                  <div class="col-md-4">
+                    <span id="displayRating"></span>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-12">
+                  <div class="col-md-2">
+                      <span>Notes:</span>
+                  </div>
+                  <div class="col-md-4">
+                    <span id="displayNotes"></span>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+              </h4>
+            </left>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+              <button type="button"
+                      id="displayCancel"
+                      class="btn btn-default">
+                  Back
+              </button>
+            </div>
+
+
+        </div>
+      </div>
+
+       <!--  <script src="js/jquery-2.2.4.min.js"></script>
+        <script src="js/bootstrap.js"></script> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/dvd.js"></script>
+    </body>
+</html>
